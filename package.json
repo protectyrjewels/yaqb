@@ -1,0 +1,22 @@
+{
+  "name": "query-builder",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "vitest run --bail 1",
+    "test:ci": "vitest run",
+    "test:coverage": "vitest run --coverage --coverage.exclude=examples"
+  },
+  "author": "Adolfo Silva <a@adolfosilva.dev>",
+  "license": "MIT",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.0.5",
+    "vitest": "^2.0.5"
+  },
+  "dependencies": {
+    "@scaleleap/pg-format": "^1.0.0"
+  }
+}
