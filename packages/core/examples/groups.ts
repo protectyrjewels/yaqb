@@ -11,7 +11,7 @@ const fields: Field[] = [
 // specific UI state of a query builder
 // notice that not all fields are being used. if the user click on "Add new rule" we can select 'gender' for instance
 // notice also that for a given type of field there is a predefined number of operators implemented. eg: for a field
-// with type 'string' we have 'eq', 'neq', 'in', etc.
+// with type 'string' we have 'eq', 'ne', 'in', etc.
 const rules: RuleGroup = {
   condition: 'and',
   rules: [

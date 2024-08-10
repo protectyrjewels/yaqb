@@ -41,3 +41,11 @@ export const rules2: RuleGroup = {
     },
   ],
 };
+
+export const rules3: RuleGroup = {
+  condition: 'and',
+  rules: [
+    { field: 'name', operator: 'eq', value: 'John' },
+    { field: 'age', operator: 'gt', value: 45 },
+  ]
+}

@@ -4,7 +4,7 @@ import { QueryBuilder } from "@yaqb/core";
 export class MongoQB implements IDialect {
   readonly id: string = 'mongo'
 
-  fromQuery(query: string, options?: any): any {
+  fromQuery(_query: string, _options?: any): any {
     return {
       condition: "and",
       rules: [
@@ -14,7 +14,7 @@ export class MongoQB implements IDialect {
     }
   }
 
-  toQuery(rules: RuleGroup, options?: any): any {
+  toQuery(rules: RuleGroup, _options?: any): any {
     return MongoQB.transformToMongoQuery(rules);
   }
 
@@ -34,6 +34,11 @@ export class MongoQB implements IDialect {
   static toOperation(rule: Rule) {
     switch (rule.operator) {
       case 'eq': return { '$eq': rule.value }
+      case 'ne': return { '$ne': rule.value }
+      case 'gt': return { '$gt': rule.value }
+      case 'lt': return { '$lt': rule.value }
+      case 'gte': return { '$gte': rule.value }
+      case 'lte': return { '$lte': rule.value }
       case 'between': {
         if (Array.isArray(rule.value) && rule.value.length === 2) {
           return { '$gte': rule.value[0], '$lte': rule.value[1] };

@@ -26,6 +26,16 @@ export class Sentencer {
     switch (rule.operator) {
       case "eq":
         return `with ${rule.field} equal to "${rule.value}"`;
+      case "ne":
+        return `with ${rule.field} not equal to "${rule.value}"`;
+      case "gt":
+        return `with ${rule.field} greater than ${rule.value}`;
+      case "lt":
+        return `with ${rule.field} less than ${rule.value}`;
+      case "gte":
+        return `with ${rule.field} greater than or equal to ${rule.value}`;
+      case "lte":
+        return `with ${rule.field} less than or equal to ${rule.value}`;
       case "between":
 	if (Array.isArray(rule.value)) {
           return `with ${rule.field} between ${rule.value[0]} and ${rule.value[1]}`;

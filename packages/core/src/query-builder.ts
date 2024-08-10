@@ -1,6 +1,6 @@
 import type { Field } from './fields'
 import type { IDialect } from './dialect'
-import type { RuleGroup } from './rules'
+import type { Rule, RuleGroup } from './rules'
 import { DialectManager } from './dialect'
 import { Sentencer } from './sentencer'
 
@@ -15,6 +15,21 @@ export class QueryBuilder {
 
   static registerDialect(dialect: IDialect) {
     DialectManager.registerDialect(dialect.id, dialect);
+  }
+
+  withNewRule(newRule: Rule) {
+    const rules = [...this.rules.rules, newRule];
+    return new QueryBuilder({...this.rules, rules}, this.fields);
+  }
+
+  setRule(index: number, rule: any) {
+    const rules = this.rules.rules.map((r, i) => i === index ? rule : r);
+    return new QueryBuilder({...this.rules, rules}, this.fields);
+  }
+
+  withoutRule(index: number) {
+    const rules = this.rules.rules.filter((_, i) => i !== index);
+    return new QueryBuilder({...this.rules, rules}, this.fields);
   }
 
   fromQuery(dialect: string, query: any, options?: any) {

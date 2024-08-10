@@ -2,6 +2,7 @@ export interface Field {
   field: string;
   label: string;
   type: string;
+  metadata?: any;
 
   // default value
   default?: string[] | number[] | string | number | boolean;

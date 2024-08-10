@@ -5,7 +5,7 @@ import { format } from "@scaleleap/pg-format";
 export class PostgresQB implements IDialect {
   readonly id: string = "pg";
 
-  fromQuery(query: string, options?: any): any {
+  fromQuery(_query: string, _options?: any): any {
     return {
       condition: "and",
       rules: [
@@ -54,6 +54,16 @@ export class PostgresQB implements IDialect {
     switch (rule.operator) {
       case "eq":
         return { queryPart: `"${rule.field}" LIKE %L`, values: [rule.value] };
+      case "ne":
+        return { queryPart: `"${rule.field}" NOT LIKE %L`, values: [rule.value] };
+      case "gt":
+        return { queryPart: `"${rule.field}" > %L`, values: [rule.value] };
+      case "lt":
+        return { queryPart: `"${rule.field}" < %L`, values: [rule.value] };
+      case "lte":
+        return { queryPart: `"${rule.field}" <= %L`, values: [rule.value] };
+      case "gte":
+        return { queryPart: `"${rule.field}" >= %L`, values: [rule.value] };
       case "between":
         if (Array.isArray(rule.value) && rule.value.length === 2) {
           return {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { QueryBuilder } from "../src/index"
-import { rules, rules2, fields } from "./fixtures"
+import { rules, rules2, fields, rules3 } from "./fixtures"
 
 describe("QueryBuilder", () => {
   describe("toQuery", () => {
@@ -17,6 +17,14 @@ describe("QueryBuilder", () => {
 
       expect(qb.toQuery("pg")).toEqual(
         `"name" LIKE 'John' AND "age" >= 0 AND "age" <= 120 AND ("gender" LIKE 'Female' OR "gender" LIKE 'Male')`
+      );
+    });
+
+    it('should convert to a postgres query with "gt" operator', () => {
+      const qb = new QueryBuilder(rules3, fields);
+
+      expect(qb.toQuery("pg")).toEqual(
+        `"name" LIKE 'John' AND "age" > 45`
       );
     });
 
