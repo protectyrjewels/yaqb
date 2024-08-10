@@ -20,8 +20,8 @@ const rules: RuleGroup = {
     {
       condition: 'or',
       rules: [
-        { field: 'gender', operator: 'eq', value: 'Female' },
-        { field: 'gender', operator: 'eq', value: 'Male' }
+        { field: 'gender', operator: 'eq', value: 'Female' },
+        { field: 'gender', operator: 'eq', value: 'Male' }
       ]
     }
   ]

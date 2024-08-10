@@ -1,4 +1,4 @@
-import type { Rule, RuleGroup } from './rules'
+import type { Rule, RuleGroup } from './rules'
 
 export class Sentencer {
   static toSentence(rules: RuleGroup): string {

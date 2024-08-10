@@ -1,6 +1,6 @@
-import { assert, describe, expect, it } from "vitest"
+import { describe, expect, it } from "vitest"
 import { QueryBuilder } from "../src/index"
-import { rules, rules2, fields } from "./fixtures"
+import { rules, rules2, fields } from "./fixtures"
 
 describe("QueryBuilder", () => {
   describe("toQuery", () => {

@@ -27,16 +27,16 @@ export class PostgresQB implements IDialect {
     return { query, params };
   }
 
-  static transformToSQLQuery(ruleGroup: RuleGroup) {
-    let clauses: string[] = [];
+  static transformToSQLQuery(ruleGroup: RuleGroup) {
+    const clauses: string[] = [];
     let params: any[] = [];
-    let condition = ruleGroup.condition.toUpperCase();
+    const condition = ruleGroup.condition.toUpperCase();
 
     // iterate through each rule or nested group
-    for (let rule of ruleGroup.rules) {
+    for (const rule of ruleGroup.rules) {
       if ("field" in rule) {
         // handling a simple rule
-        let { queryPart, values } = PostgresQB.prepareRuleQuery(rule);
+        const { queryPart, values } = PostgresQB.prepareRuleQuery(rule);
         clauses.push(queryPart);
         params = params.concat(values);
       } else {

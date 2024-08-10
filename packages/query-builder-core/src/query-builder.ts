@@ -1,6 +1,6 @@
 import type { Field } from './fields'
 import type { IDialect } from './dialect'
-import type { RuleGroup } from './rules'
+import type { RuleGroup } from './rules'
 import { DialectManager } from './dialect'
 import { Sentencer } from './sentencer'
 
@@ -23,7 +23,7 @@ export class QueryBuilder {
     return qb.fromQuery(query, options)
   }
 
-  toQuery(dialect: string, options: any = {}) {
+  toQuery(dialect: string, options: any = {}) {
     const qb = DialectManager.getDialect(dialect) 
     if (!qb) throw new Error(`Unknown dialect '${dialect}'`);
     return qb.toQuery(this.rules, options)
