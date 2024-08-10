@@ -1,5 +1,11 @@
 # Query Builder
 
+<p>
+  <a href="https://github.com/protectyrjewels/query-builder/actions/workflows/ci.yaml" alt="CI">
+    <img src="https://github.com/protectyrjewels/query-builder/actions/workflows/ci.yaml/badge.svg" />
+  </a>
+</p>
+
 Query Builder is an adaptable tool that assists developers in constructing SQL and MongoDB queries directly from structured rules. Moreover, it articulates the complex query logic into a human-readable natural language sentence, enhancing understandability and documentation.
 
 ## Features
@@ -11,7 +17,7 @@ Query Builder is an adaptable tool that assists developers in constructing SQL a
 
 - Supporting generating rule groups from queries
 
-## Example
+## Examples
 
 ```typescript
 import { QueryBuilder, type Field, type RuleGroup } from '@query-builder/pg'
