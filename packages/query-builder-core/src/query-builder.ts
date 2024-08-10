@@ -3,11 +3,6 @@ import type { IDialect } from './dialect'
 import type { RuleGroup } from './rules'
 import { DialectManager } from './dialect'
 import { Sentencer } from './sentencer'
-import { dialects } from './dialects'
-
-dialects.forEach((dialect: IDialect) => {
-  DialectManager.registerDialect(dialect.id, dialect);
-});
 
 export class QueryBuilder {
   public rules: RuleGroup;
@@ -16,6 +11,10 @@ export class QueryBuilder {
   constructor(rules: RuleGroup, fields: Field[]) {
     this.rules = rules; 
     this.fields = fields; 
+  }
+
+  static registerDialect(dialect: IDialect) {
+    DialectManager.registerDialect(dialect.id, dialect);
   }
 
   fromQuery(dialect: string, query: string, options?: any) {

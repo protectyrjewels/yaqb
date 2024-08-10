@@ -1,5 +1,5 @@
-import type { IDialect } from '../dialect'
-import type { Rule, RuleGroup } from '../rules'
+import type { IDialect, RuleGroup } from "query-builder-core";
+import { QueryBuilder } from "query-builder-core";
 
 export class MongoQB implements IDialect {
   id: string = 'mongo'
@@ -40,3 +40,7 @@ export class MongoQB implements IDialect {
     }
   }
 }
+
+QueryBuilder.registerDialect(new MongoDB())
+
+export { QueryBuilder }

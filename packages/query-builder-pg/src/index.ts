@@ -1,5 +1,5 @@
-import type { IDialect } from "../dialect";
-import type { RuleGroup } from "../rules";
+import type { IDialect, RuleGroup } from "query-builder-core";
+import { QueryBuilder } from "query-builder-core";
 import { format } from "@scaleleap/pg-format";
 
 export class PostgresQB implements IDialect {
@@ -72,3 +72,6 @@ export class PostgresQB implements IDialect {
   }
 }
 
+QueryBuilder.registerDialect(new PostgresQB())
+
+export { QueryBuilder }
