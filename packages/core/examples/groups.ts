@@ -1,5 +1,5 @@
-import type { Field, RuleGroup } from '@protectyrjewels/query-builder-core'
-import { QueryBuilder } from '@protectyrjewels/query-builder-core'
+import type { Field, RuleGroup } from '@query-builder/core'
+import { QueryBuilder } from '@query-builder/core'
 
 // collection of options for each statement
 const fields: Field[] = [

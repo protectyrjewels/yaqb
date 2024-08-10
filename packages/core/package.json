@@ -1,5 +1,5 @@
 {
-  "name": "@protectyrjewels/query-builder-core",
+  "name": "@query-builder/core",
   "version": "1.0.0",
   "main": "src/index.ts",
   "directories": {

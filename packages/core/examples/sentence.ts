@@ -1,4 +1,4 @@
-import { Sentencer, type RuleGroup } from '@protectyrjewels/query-builder-core'
+import { Sentencer, type RuleGroup } from '@query-builder/core'
 
 const rules: RuleGroup = {
   condition: 'and',

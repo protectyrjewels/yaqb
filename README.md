@@ -14,7 +14,7 @@ Query Builder is an adaptable tool that assists developers in constructing SQL a
 ## Example
 
 ```typescript
-import { QueryBuilder, type Field, type RuleGroup } from '@protectyrjewels/query-builder-pg'
+import { QueryBuilder, type Field, type RuleGroup } from '@query-builder/pg'
 
 const fields: Field[] = [
   { field: "name", label: "Name", type: "string" },
@@ -56,9 +56,9 @@ console.log(params);
 If you want to support multiple query providers, you need to register the providers like this:
 
 ```typescript
-import { QueryBuilder, type Field, type RuleGroup } from '@protectyrjewels/query-builder-core'
-import { MongoDB } from '@protectyrjewels/query-builder-mongo'
-import { PostgresQB } from '@protectyrjewels/query-builder-pg'
+import { QueryBuilder, type Field, type RuleGroup } from '@query-builder/core'
+import { MongoDB } from '@query-builder/mongo'
+import { PostgresQB } from '@query-builder/pg'
 
 QueryBuilder.registerDialect(new MongoQB())
 QueryBuilder.registerDialect(new PostgresQB())
@@ -72,7 +72,7 @@ QueryBuilder.registerDialect(new PostgresQB())
 If you just want a natural language sentence of the rule group, you can:
 
 ```typescript
-import { Sentencer, type RuleGroup } from '@protectyrjewels/query-builder-core'
+import { Sentencer, type RuleGroup } from '@query-builder/core'
 
 const rules: RuleGroup = {
   condition: 'and',

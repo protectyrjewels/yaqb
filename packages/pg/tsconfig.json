@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "references": [
-    { "path": "../query-builder-core" }
+    { "path": "../core" }
   ],
   "compilerOptions": {
     "declarationDir": "./types",

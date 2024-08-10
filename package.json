@@ -1,5 +1,5 @@
 {
-  "name": "query-builder",
+  "name": "@query-builder",
   "version": "1.0.0",
   "description": "Query Builder is an adaptable tool that assists developers in constructing SQL and MongoDB queries directly from structured rules. Moreover, it articulates the complex query logic into a human-readable natural language sentence, enhancing understandability and documentation.",
   "author": "Adolfo Silva <a@adolfosilva.dev>",
@@ -9,11 +9,15 @@
     "lint": "eslint packages",
     "test": "npm run test --workspaces --if-present"
   },
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=16.0.0"
+  },
   "workspaces": [
-    "packages/query-builder-core",
-    "packages/query-builder-mongo",
-    "packages/query-builder-pg",
-    "packages/query-builder-ui-ng"
+    "packages/core",
+    "packages/mongo",
+    "packages/pg",
+    "packages/ui-ng"
   ],
   "devDependencies": {
     "@eslint/js": "^9.9.0",

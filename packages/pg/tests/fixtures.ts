@@ -1,4 +1,4 @@
-import type { Field, RuleGroup } from "@protectyrjewels/query-builder-core"
+import type { Field, RuleGroup } from "@query-builder/core"
 
 export const fields: Field[] = [
   { field: "name", label: "Name", type: "string" },
