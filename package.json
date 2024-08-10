@@ -1,22 +1,20 @@
 {
   "name": "query-builder",
   "version": "1.0.0",
-  "main": "src/index.ts",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "vitest run --bail 1",
-    "test:ci": "vitest run",
-    "test:coverage": "vitest run --coverage --coverage.exclude=examples"
-  },
+  "description": "Query Builder is an adaptable tool that assists developers in constructing SQL and MongoDB queries directly from structured rules. Moreover, it articulates the complex query logic into a human-readable natural language sentence, enhancing understandability and documentation.",
   "author": "Adolfo Silva <a@adolfosilva.dev>",
   "license": "MIT",
-  "devDependencies": {
-    "@vitest/coverage-v8": "^2.0.5",
-    "vitest": "^2.0.5"
+  "scripts": {
+    "build": "tsc --build",
+    "test": "npm run test --workspaces --if-present"
   },
-  "dependencies": {
-    "@scaleleap/pg-format": "^1.0.0"
+  "workspaces": [
+    "packages/query-builder-core",
+    "packages/query-builder-mongo",
+    "packages/query-builder-pg",
+    "packages/query-builder-ui-ng"
+  ],
+  "devDependencies": {
+    "typescript": "^5.5.4"
   }
 }

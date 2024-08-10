@@ -1,8 +1,8 @@
 import type { RuleGroup } from './rules'
 
 export interface IDialect {
-  id: string;
-  fromQuery(query: string, options?: any): any;
+  readonly id: string;
+  fromQuery(query: any, options?: any): any;
   toQuery(rules: RuleGroup, options?: any): any;
 }
 

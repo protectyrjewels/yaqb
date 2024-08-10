@@ -7,10 +7,14 @@ Query Builder is an adaptable tool that assists developers in constructing SQL a
 - Supports generating both SQL (Postgres) queries and MongoDB queries
 - Generates a natural language description of a set of rules
 
+## Roadmap
+
+- Supporting generating rule groups from queries
+
 ## Example
 
 ```typescript
-import { QueryBuilder, type Field, type RuleGroup } from 'query-builder'
+import { QueryBuilder, type Field, type RuleGroup } from '@protectyrjewels/query-builder-pg'
 
 const fields: Field[] = [
   { field: "name", label: "Name", type: "string" },
@@ -41,7 +45,7 @@ const rules: RuleGroup = {
 
 const qb = new QueryBuilder(rules, fields);
 
-const { query, params } = qb.toQuery('pg', { parameterized: true });
+const { query, params } = qb.toQuery({ parameterized: true });
 console.log(query);
 // will output => `"name" LIKE %L AND "age" >= %L AND "age" <= %L`
 console.log(params);
@@ -49,6 +53,39 @@ console.log(params);
 
 ```
 
-## LICENSE
+If you want to support multiple query providers, you need to register the providers like this:
+
+```typescript
+import { QueryBuilder, type Field, type RuleGroup } from '@protectyrjewels/query-builder-core'
+import { MongoDB } from '@protectyrjewels/query-builder-mongo'
+import { PostgresQB } from '@protectyrjewels/query-builder-pg'
+
+QueryBuilder.registerDialect(new MongoQB())
+QueryBuilder.registerDialect(new PostgresQB())
+
+// you can now generate queries for both providers:
+// qb.toQuery('mongo')
+// qb.toQuery('pg')
+
+```
+
+If you just want a natural language sentence of the rule group, you can:
+
+```typescript
+import { Sentencer, type RuleGroup } from '@protectyrjewels/query-builder-core'
+
+const rules: RuleGroup = {
+  condition: 'and',
+  rules: [
+    { field: 'name', operator: 'eq', value: 'John' },
+    { field: 'age', operator: 'between', value: [0, 120] },
+  ]
+}
+
+// will print: 'with name equal to "John" and with age between 0 and 120'
+console.log(Sentencer.toSentence(rules));
+```
+
+## License
 
 This software is licensed under the MIT license. See [LICENSE](./LICENSE) for details.

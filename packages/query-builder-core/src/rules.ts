@@ -4,7 +4,9 @@ export interface Rule {
   value: string[] | number[] | string | number | boolean;
 }
 
+export type RuleElem = Rule | RuleGroup
+
 export interface RuleGroup {
   condition: 'and' | 'or';
-  rules: Rule[] | RuleGroup;
+  rules: RuleElem[];
 }

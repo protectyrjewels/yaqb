@@ -1,9 +1,9 @@
-import type { IDialect } from "../dialect";
-import type { RuleGroup } from "../rules";
+import type { IDialect, Rule, RuleGroup } from "@protectyrjewels/query-builder-core";
+import { QueryBuilder } from "@protectyrjewels/query-builder-core";
 import { format } from "@scaleleap/pg-format";
 
 export class PostgresQB implements IDialect {
-  id: string = "pg";
+  readonly id: string = "pg";
 
   fromQuery(query: string, options?: any): any {
     return {
@@ -28,8 +28,8 @@ export class PostgresQB implements IDialect {
   }
 
   static transformToSQLQuery(ruleGroup: RuleGroup) {
-    let clauses = [];
-    let params = [];
+    let clauses: string[] = [];
+    let params: any[] = [];
     let condition = ruleGroup.condition.toUpperCase();
 
     // iterate through each rule or nested group
@@ -72,3 +72,6 @@ export class PostgresQB implements IDialect {
   }
 }
 
+QueryBuilder.registerDialect(new PostgresQB())
+
+export { QueryBuilder }

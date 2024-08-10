@@ -27,7 +27,12 @@ export class Sentencer {
       case "eq":
         return `with ${rule.field} equal to "${rule.value}"`;
       case "between":
-        return `with ${rule.field} between ${rule.value[0]} and ${rule.value[1]}`;
+	if (Array.isArray(rule.value)) {
+          return `with ${rule.field} between ${rule.value[0]} and ${rule.value[1]}`;
+        }
+	throw new Error("Invalid value for 'between' operator")
+      default:
+	throw new Error("Unsupported operator")
     }
   }
 }

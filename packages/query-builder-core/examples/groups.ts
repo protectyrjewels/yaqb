@@ -1,5 +1,5 @@
-import { QueryBuilder } from '../src/index'
-import type { Field, RuleGroup } from '../src/index'
+import type { Field, RuleGroup } from '@protectyrjewels/query-builder-core'
+import { QueryBuilder } from '@protectyrjewels/query-builder-core'
 
 // collection of options for each statement
 const fields: Field[] = [
@@ -17,9 +17,17 @@ const rules: RuleGroup = {
   rules: [
     { field: 'name', operator: 'eq', value: 'John' },
     { field: 'age', operator: 'between', value: [0, 120] },
+    {
+      condition: 'or',
+      rules: [
+        { field: 'gender', operator: 'eq', value: 'Female' },
+        { field: 'gender', operator: 'eq', value: 'Male' }
+      ]
+    }
   ]
 }
 
 const qb = new QueryBuilder(rules, fields);
 
 console.log(qb.toSentence());
+

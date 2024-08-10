@@ -1,8 +1,8 @@
-import type { IDialect } from '../dialect'
-import type { Rule, RuleGroup } from '../rules'
+import type { IDialect, Rule, RuleElem, RuleGroup } from "@protectyrjewels/query-builder-core";
+import { QueryBuilder } from "@protectyrjewels/query-builder-core";
 
 export class MongoQB implements IDialect {
-  id: string = 'mongo'
+  readonly id: string = 'mongo'
 
   fromQuery(query: string, options?: any): any {
     return {
@@ -20,7 +20,7 @@ export class MongoQB implements IDialect {
 
   static transformToMongoQuery(ruleGroup: RuleGroup): any {
     const operation = `$${ruleGroup.condition}`;
-    const rules = ruleGroup.rules.map((rule) => {
+    const rules = ruleGroup.rules.map((rule: RuleElem) => {
       if ('field' in rule) { // It's a rule
         return { [rule.field]: MongoQB.toOperation(rule) };
       } else { // It's a nested RuleGroup
@@ -34,9 +34,18 @@ export class MongoQB implements IDialect {
   static toOperation(rule: Rule) {
     switch (rule.operator) {
       case 'eq': return { '$eq': rule.value }
-      case 'between': return { '$gte': rule.value[0], '$lte': rule.value[1] };
+      case 'between': {
+        if (Array.isArray(rule.value) && rule.value.length === 2) {
+          return { '$gte': rule.value[0], '$lte': rule.value[1] };
+	}
+        throw new Error(`Invalid value for 'between' operator: ${rule.value}`);
+      }
       default:
         throw new Error(`Unsupported operator ${rule.operator}`);
     }
   }
 }
+
+QueryBuilder.registerDialect(new MongoQB())
+
+export { QueryBuilder }

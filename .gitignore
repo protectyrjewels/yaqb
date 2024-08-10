@@ -1,5 +1,7 @@
 ### Project Specific
-tests/__snapshots__/
+**/__snapshots__/*
+*.js
+*.js.map
 
 ### macOS ###
 # General

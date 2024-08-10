@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/query-builder-core" },
+    { "path": "packages/query-builder-mongo" },
+    { "path": "packages/query-builder-pg" }
+  ]
+}
