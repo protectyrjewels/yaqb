@@ -1,4 +1,4 @@
-import { Sentencer, type RuleGroup } from '@query-builder/core'
+import { Sentencer, type RuleGroup } from '@yaqb/core'
 
 const rules: RuleGroup = {
   condition: 'and',

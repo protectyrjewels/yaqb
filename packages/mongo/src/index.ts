@@ -1,5 +1,5 @@
-import type { IDialect, Rule, RuleElem, RuleGroup } from "@query-builder/core";
-import { QueryBuilder } from "@query-builder/core";
+import type { IDialect, Rule, RuleElem, RuleGroup } from "@yaqb/core";
+import { QueryBuilder } from "@yaqb/core";
 
 export class MongoQB implements IDialect {
   readonly id: string = 'mongo'

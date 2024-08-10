@@ -1,7 +1,7 @@
 {
-  "name": "@query-builder",
+  "name": "@yaqb",
   "version": "1.0.0",
-  "description": "Query Builder is an adaptable tool that assists developers in constructing SQL and MongoDB queries directly from structured rules. Moreover, it articulates the complex query logic into a human-readable natural language sentence, enhancing understandability and documentation.",
+  "description": "Yet Another Query Builder is an adaptable tool that assists developers in constructing SQL and MongoDB queries directly from structured rules. Moreover, it articulates the complex query logic into a human-readable natural language sentence, enhancing understandability and documentation.",
   "author": "Adolfo Silva <a@adolfosilva.dev>",
   "license": "MIT",
   "scripts": {

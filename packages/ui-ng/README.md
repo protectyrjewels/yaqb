@@ -1,1 +1,1 @@
-# query-builder-ui-ng
+# @yaqb/ui-ng

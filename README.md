@@ -1,12 +1,12 @@
-# Query Builder
+# Yet Another Query Builder
 
 <p>
-  <a href="https://github.com/protectyrjewels/query-builder/actions/workflows/ci.yaml" alt="CI">
-    <img src="https://github.com/protectyrjewels/query-builder/actions/workflows/ci.yaml/badge.svg" />
+  <a href="https://github.com/protectyrjewels/yaqb/actions/workflows/ci.yaml" alt="CI">
+    <img src="https://github.com/protectyrjewels/yaqb/actions/workflows/ci.yaml/badge.svg" />
   </a>
 </p>
 
-Query Builder is an adaptable tool that assists developers in constructing SQL and MongoDB queries directly from structured rules. Moreover, it articulates the complex query logic into a human-readable natural language sentence, enhancing understandability and documentation.
+Yet Another Query Builder is an adaptable tool that assists developers in constructing SQL and MongoDB queries directly from structured rules. Moreover, it articulates the complex query logic into a human-readable natural language sentence, enhancing understandability and documentation.
 
 ## Features
 
@@ -20,7 +20,7 @@ Query Builder is an adaptable tool that assists developers in constructing SQL a
 ## Examples
 
 ```typescript
-import { QueryBuilder, type Field, type RuleGroup } from '@query-builder/pg'
+import { QueryBuilder, type Field, type RuleGroup } from '@yaqb/pg'
 
 const fields: Field[] = [
   { field: "name", label: "Name", type: "string" },
@@ -62,9 +62,9 @@ console.log(params);
 If you want to support multiple query providers, you need to register the providers like this:
 
 ```typescript
-import { QueryBuilder, type Field, type RuleGroup } from '@query-builder/core'
-import { MongoDB } from '@query-builder/mongo'
-import { PostgresQB } from '@query-builder/pg'
+import { QueryBuilder, type Field, type RuleGroup } from '@yaqb/core'
+import { MongoDB } from '@yaqb/mongo'
+import { PostgresQB } from '@yaqb/pg'
 
 QueryBuilder.registerDialect(new MongoQB())
 QueryBuilder.registerDialect(new PostgresQB())
@@ -78,7 +78,7 @@ QueryBuilder.registerDialect(new PostgresQB())
 If you just want a natural language sentence of the rule group, you can:
 
 ```typescript
-import { Sentencer, type RuleGroup } from '@query-builder/core'
+import { Sentencer, type RuleGroup } from '@yaqb/core'
 
 const rules: RuleGroup = {
   condition: 'and',

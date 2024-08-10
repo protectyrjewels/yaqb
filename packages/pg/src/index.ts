@@ -1,5 +1,5 @@
-import type { IDialect, Rule, RuleGroup } from "@query-builder/core";
-import { QueryBuilder } from "@query-builder/core";
+import type { IDialect, Rule, RuleGroup } from "@yaqb/core";
+import { QueryBuilder } from "@yaqb/core";
 import { format } from "@scaleleap/pg-format";
 
 export class PostgresQB implements IDialect {
