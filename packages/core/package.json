@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test": "vitest run --bail 1",
-    "test:coverage": "vitest run --coverage --coverage.exclude=examples --coverage.exclude=dist --coverage.exclude=types"
+    "coverage": "vitest run --coverage --coverage.exclude=examples --coverage.exclude=dist --coverage.exclude=types --coverage.exclude=tests"
   },
   "author": "Adolfo Silva <a@adolfosilva.dev>",
   "license": "MIT",
