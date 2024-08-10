@@ -17,7 +17,7 @@
     "packages/core",
     "packages/mongo",
     "packages/pg",
-    "packages/ui-ng"
+    "packages/ui-react"
   ],
   "devDependencies": {
     "@eslint/js": "^9.9.0",
