@@ -21,5 +21,5 @@
       "@yaqb/ui-react": ["./lib/main.ts"]
     }
   },
-  "include": ["lib"],
+  "include": ["src", "lib"],
 }
