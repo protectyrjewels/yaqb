@@ -7,6 +7,7 @@ import {
 } from "@react-awesome-query-builder/core";
 import { IDialect, QueryBuilder, RuleGroup } from "@yaqb/core";
 // import { formatQuery } from "react-querybuilder";
+import { Condition, example_query_config } from "./config/query-config";
 
 export class QueryResolver implements IDialect {
   config = {
@@ -120,7 +121,51 @@ export class QueryResolver implements IDialect {
     console.log("lopes", sql);
     return sql;
   }
+
   readonly id: string = "query-resolver";
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  _just_a_test(inputs: { [key: string]: any }) {
+    const { where, mapper } = example_query_config.Geographic;
+
+    const whereParts: Condition[] = [];
+
+    where.forEach((condition) => {
+      let field = condition.field;
+      let operator = condition.operator;
+      let value = condition.value;
+
+      let allPlaceholdersReplaced = true;
+
+      for (const key in inputs) {
+        const placeholder = `\${${key}}`;
+
+        if (field.includes(placeholder)) {
+          field = field.replace(placeholder, inputs[key]);
+        }
+        if (operator.includes(placeholder)) {
+          operator = mapper[key] ? mapper[key][inputs[key]] : inputs[key];
+        }
+        if (value.includes(placeholder)) {
+          value = `${inputs[key]}`;
+        }
+      }
+
+      if (
+        field.includes("${") ||
+        operator.includes("${") ||
+        value.includes("${")
+      ) {
+        allPlaceholdersReplaced = false;
+      }
+
+      if (allPlaceholdersReplaced && field && operator && value) {
+        whereParts.push({ field, operator, value });
+      }
+    });
+
+    return whereParts;
+  }
 }
 
 QueryBuilder.registerDialect(new QueryResolver());

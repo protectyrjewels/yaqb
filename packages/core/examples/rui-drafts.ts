@@ -1,6 +1,6 @@
 const uiConfig = {
   geographic: {
-    1: {
+    field_1: {
       components: [
         {
           type: "select",
@@ -18,7 +18,7 @@ const uiConfig = {
         },
       ],
     },
-    2: {
+    field_2: {
       components: [
         {
           type: "select",
@@ -32,7 +32,7 @@ const uiConfig = {
         },
       ],
     },
-    3: {
+    field_3: {
       components: [
         {
           type: "select",
@@ -51,47 +51,47 @@ const uiConfig = {
 const outputUI = {
   geographic: [
     {
-      id: "1",
+      id: "field_1",
       value: "Is not currently in",
     },
     {
-      id: "2",
+      id: "field_2",
       value: "Country",
     },
     {
-      id: "3",
+      id: "field_3",
       value: "USA",
     },
   ],
 };
 
 const dataConfig = {
-  Geographic: {
+  geographic: {
     model: "User",
-    select: ["id", "c.name"],
-    // joins: ["${4}"],
+    select: ["id", "name"],
+    // joins: ["${field_4}"],
     where: [
       {
-        field: "${2}",
-        operator: "${1}",
-        value: "${3}",
+        field: "${field_2}",
+        operator: "${field_1}",
+        value: "${field_3}",
       },
     ],
     mapper: {
-      [1]: {
+      field_1: {
         "Is not currently in": "not_equal",
         "Is currently in": "equal",
       },
-      // [4]: {
-      //     "Country": {
-      //         model: "countries",
-      //         select: ["id", "name"],
-      //         on: {
-      //             "User.countryId": "Country.id"
-      //         },
-      //         as: "c"
-      //     }
-      // }
+      // field_4: {
+      //   Country: {
+      //     model: "countries",
+      //     select: ["id", "name"],
+      //     on: {
+      //       "User.countryId": "Country.id",
+      //     },
+      //     as: "c",
+      //   },
+      // },
     },
   },
 };
