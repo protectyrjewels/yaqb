@@ -1,13 +1,13 @@
-import React from 'react';
-import { Builder } from '@yaqb/ui-react'
+import { RuleGroup } from "@yaqb/core";
+import { Builder } from "@yaqb/ui-react";
 
-const rules = {
-  condition: 'and',
+const rules: RuleGroup = {
+  condition: "and",
   rules: [
-    { field: 'name', operator: 'eq', value: 'John' },
-    { field: 'age', operator: 'gt', value: 20 },
-  ]
-}
+    { field: "name", operator: "eq", value: "John" },
+    { field: "age", operator: "gt", value: 20 },
+  ],
+};
 
 const fields = [
   {
@@ -44,22 +44,25 @@ const fields = [
     label: "Works in",
     type: "string",
     metadata: { category: "geographic" },
-  }
-]
+  },
+];
 
 function App() {
   return (
-    <div style={{margin: "50px"}}>
-      <h1 style={{fontSize: "2rem"}}>
+    <div style={{ margin: "50px" }}>
+      <h1 style={{ fontSize: "2rem" }}>
         <strong>@yaqb/ui-react demo</strong>
       </h1>
-      <div style={{fontSize: "1rem", marginTop: "10px", marginBottom: "20px" }}>
-        <em>Yet Another Query Builder</em> is a React component that allows users to build complex queries with an intuitive UI.
+      <div
+        style={{ fontSize: "1rem", marginTop: "10px", marginBottom: "20px" }}
+      >
+        <em>Yet Another Query Builder</em> is a React component that allows
+        users to build complex queries with an intuitive UI.
       </div>
 
       <Builder rules={rules} fields={fields} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
