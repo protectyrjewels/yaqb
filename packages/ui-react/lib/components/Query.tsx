@@ -27,7 +27,7 @@ export const Query: React.FC<QueryProps> = ({ title }) => {
     <div className='text-sm'>
       <div className='text-sm font-semibold'>{title}</div>
       <select className='mt-2 p-1.5 w-fit border border-gray-200 rounded-md bg-gray-100' value={format} onChange={(event) => { setFormat(event.target.value) }}>
-        <option value='json'>JSON</option>
+        <option value='json'>UQL</option>
         <option value='mongo'>MongoDB</option>
         <option value='sql'>SQL</option>
       </select>
