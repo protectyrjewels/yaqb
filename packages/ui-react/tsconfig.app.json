@@ -15,7 +15,7 @@
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@yaqb/ui-react": ["./lib/main.ts"]

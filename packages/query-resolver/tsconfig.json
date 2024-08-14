@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "references": [
+    { "path": "../core" }
+  ],
+  "compilerOptions": {
+    "declarationDir": "./types",
+    "outDir": "./dist"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "examples/*",
+    "dist/**/*",
+    "types/**/*",
+    "node_modules"
+  ]
+}

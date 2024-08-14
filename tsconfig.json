@@ -3,6 +3,7 @@
   "references": [
     { "path": "packages/core" },
     { "path": "packages/mongo" },
-    { "path": "packages/pg" }
+    { "path": "packages/pg" },
+    { "path": "packages/query-resolver" }
   ]
 }
