@@ -9,7 +9,6 @@ export declare class QueryBuilder {
     withNewRule(newRule: Rule): QueryBuilder;
     setRule(index: number, rule: any): QueryBuilder;
     withoutRule(index: number): QueryBuilder;
-    fromQuery(dialect: string, query: any, options?: any): any;
     toQuery(dialect: string, options?: any): any;
     toSentence(): string;
 }

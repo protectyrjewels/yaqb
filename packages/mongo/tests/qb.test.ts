@@ -25,16 +25,4 @@ describe("QueryBuilder", () => {
       expect(qb.toQuery("mongo")).toEqual(expected);
     });
   });
-
-  describe("fromQuery", () => {
-    it("should convert from a mongo query", () => {
-      const qb = new QueryBuilder(rules, fields);
-
-      expect(
-        qb.fromQuery("mongo", {
-          $and: [{ name: { $eq: "John" } }, { age: { $gte: 0, $lte: 120 } }],
-        })
-      ).toEqual(rules);
-    });
-  });
 });

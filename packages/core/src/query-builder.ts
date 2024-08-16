@@ -32,12 +32,6 @@ export class QueryBuilder {
     return new QueryBuilder({...this.rules, rules}, this.fields);
   }
 
-  fromQuery(dialect: string, query: any, options?: any) {
-    const qb = DialectManager.getDialect(dialect) 
-    if (!qb) throw new Error(`Unknown dialect '${dialect}'`);
-    return qb.fromQuery(query, options)
-  }
-
   toQuery(dialect: string, options: any = {}) {
     const qb = DialectManager.getDialect(dialect) 
     if (!qb) throw new Error(`Unknown dialect '${dialect}'`);
