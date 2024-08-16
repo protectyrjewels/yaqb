@@ -1,15 +1,25 @@
-import React from 'react';
 import { Builder } from '@yaqb/ui-react'
+import { Field, RuleGroup } from '@yaqb/core';
+import { PrimitiveType } from '@yaqb/core/src/fields';
 
-const rules = {
+async function fetchPokemonNames(): Promise<PrimitiveType[]> {
+  const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10&offset=0');
+  if (!response.ok) {
+      throw new Error('Network response was not ok');
+  }
+  const data = await response.json();
+  return data.results.map((pokemon: { name: string }) => pokemon.name as PrimitiveType);
+}
+
+const rules: RuleGroup = {
   condition: 'and',
   rules: [
-    { field: 'name', operator: 'eq', value: 'John' },
-    { field: 'age', operator: 'gt', value: 20 },
+    { field: 'name', operator: 'eq', value: ['John'] },
+    { field: 'age', operator: 'gt', value: [20] },
   ]
 }
 
-const fields = [
+const fields: Field[] = [
   {
     field: "name",
     label: "Name",
@@ -29,8 +39,15 @@ const fields = [
   {
     field: "gender",
     label: "Gender",
-    type: "selector",
-    values: ["Male", "Female"],
+    type: "enum",
+    value: ["Male", "Female"],
+    metadata: { category: "demographic" },
+  },
+  {
+    field: "pokemon",
+    label: "Favorite Pokemon",
+    type: "enum",
+    value: fetchPokemonNames,
     metadata: { category: "demographic" },
   },
   {

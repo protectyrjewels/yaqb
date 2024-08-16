@@ -70,8 +70,10 @@ export class PostgresQB implements IDialect {
             queryPart: `"${rule.field}" >= %L AND "${rule.field}" <= %L`,
             values: rule.value,
           };
+        } else if (Array.isArray(rule.value) && rule.value.length === 1) {
+          return { queryPart: `"${rule.field}" = %L`, values: [rule.value] };
         }
-        throw new Error(`Invalid value for 'between' operator: ${rule.value}`);
+        throw new Error(`Unsupported value for between operator: ${rule.value}`);
       default:
         throw new Error(`Unsupported operator ${rule.operator}`);
     }

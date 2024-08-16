@@ -14,8 +14,8 @@ export const fields: Field[] = [
   {
     field: "gender",
     label: "Gender",
-    type: "selector",
-    values: ["Male", "Female"],
+    type: "enum",
+    value: ["Male", "Female"],
   },
 ];
 

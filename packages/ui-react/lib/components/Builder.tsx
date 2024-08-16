@@ -32,7 +32,7 @@ export const Builder: React.FC<BuilderProps> = ({ rules, fields }) => {
     const segmentField = fields.find(field => field.metadata?.category === segment);
     if (!segmentField) return;
     const op = typeToOperatorsMap[segmentField.type][0];
-    const newRule = { field: segmentField.field, operator: op, value: '' };
+    const newRule = { field: segmentField.field, operator: op, value: [''] };
     setQueryBuilder(queryBuilder.withNewRule(newRule));
   };
 

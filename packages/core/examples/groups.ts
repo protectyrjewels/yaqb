@@ -5,7 +5,7 @@ import { QueryBuilder } from '@yaqb/core'
 const fields: Field[] = [
   { field: 'name', label: 'Name', type: 'string' },
   { field: 'age', label: 'Age', type: 'number', validations: [{ type: "min", value: 0}, { type: "max", value: 120} ]},
-  { field: 'gender', label: 'Gender', type: 'selector', values: ['Male', 'Female'] }
+  { field: 'gender', label: 'Gender', type: 'enum', value: ['Male', 'Female'] }
 ]
 
 // specific UI state of a query builder

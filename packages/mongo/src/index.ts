@@ -42,6 +42,8 @@ export class MongoQB implements IDialect {
       case 'between': {
         if (Array.isArray(rule.value) && rule.value.length === 2) {
           return { '$gte': rule.value[0], '$lte': rule.value[1] };
+        } else if (Array.isArray(rule.value) && rule.value.length === 1) {
+          return { '$eq': rule.value[0] };
         }
         throw new Error(`Invalid value for 'between' operator: ${rule.value}`);
       }

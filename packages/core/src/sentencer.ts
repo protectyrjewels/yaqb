@@ -37,12 +37,13 @@ export class Sentencer {
       case "lte":
         return `with ${rule.field} less than or equal to ${rule.value}`;
       case "between":
-	if (Array.isArray(rule.value)) {
+	      if (Array.isArray(rule.value) && rule.value.length === 2) {
           return `with ${rule.field} between ${rule.value[0]} and ${rule.value[1]}`;
+        } else {
+          return `with ${rule.field} between ${rule.value}`;
         }
-	throw new Error("Invalid value for 'between' operator")
       default:
-	throw new Error("Unsupported operator")
+	      throw new Error("Unsupported operator")
     }
   }
 }

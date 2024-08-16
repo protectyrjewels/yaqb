@@ -1,8 +1,9 @@
 import type { Rule, Field } from '@yaqb/core';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { operatorToTextMap, typeToOperatorsMap } from '../operators';
 import CloseIcon from '../icons/close';
 import { useQuery } from '../contexts/query';
+import { PrimitiveType } from '@yaqb/core/src/fields';
 
 export interface CustomRuleProps {
   title: string;
@@ -13,26 +14,58 @@ export interface CustomRuleProps {
   closeRule: () => void;
 }
 
+const Input: React.FC<{ rule: Rule, fields: Field[], updateValue: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, type: string, pos: number) => void }> = ({ rule, fields, updateValue }) => {
+  const [vals, setVals] = useState<PrimitiveType[]>(rule.value);
+
+  const field = fields.find((field) => field.field === rule.field);
+  if (!field) {
+    throw new Error(`Field ${rule.field} not found`);
+  }
+
+  useEffect(() => {
+    async function getVals() {
+      if (!field) return
+      console.log(field)
+      if (field.value instanceof Function) {
+        console.log('field.value is a function')
+        const values = await field.value();
+        setVals(values);
+      } else if (Array.isArray(field.value)) {
+        setVals(field.value);
+      }
+    }
+    getVals();
+ }, [field]);
+
+  
+  if (rule.operator === 'between') {
+    return (
+      <div className='flex space-x-2 items-center'>
+        <input type={field.type} className='p-1.5 rounded bg-[#F8F8FB] w-14' value={vals[0]} onChange={(e) => updateValue(e, 'number', 0)} />
+        <span className='text-gray-600'>and</span>
+        <input type={field.type} className='p-1.5 rounded bg-[#F8F8FB] w-14' value={vals[1]} onChange={(e) => updateValue(e, 'number', 1)} />
+      </div>
+    );
+  }
+
+  switch (field.type) {
+    case 'enum':
+      return (
+        <select className='p-1.5 rounded bg-[#F8F8FB] w-fit' value={rule.value[0]} onChange={(e) => updateValue(e, 'text', 0)}>
+          {(vals).map((value: PrimitiveType) => (
+            <option key={value} value={value}>{value.toString()}</option>
+          ))}
+        </select>
+      );
+    default:
+      return <input type={field.type} className='p-1.5 rounded bg-[#F8F8FB] w-fit' value={vals[0] as string} onChange={(e) => updateValue(e, 'text', 0)} />
+  }
+}
+
 export const CustomRule: React.FC<CustomRuleProps> = ({ title, ruleIndex, rule: initialRule, fields, closeRule }) => {
   const { queryBuilder, setQueryBuilder } = useQuery();
   const [availableOperators, setAvailableOperators] = useState<string[]>([]);
   const [rule, setRule] = useState<Rule>(initialRule);
-  const operatorType = useMemo(() => {
-    const field = fields.find((field) => field.field === rule.field);
-    if (!field) {
-      throw new Error(`Field ${rule.field} not found`);
-    }
-    
-    switch (field.type) {
-      case 'number':
-        return 'number';
-      case 'date':
-        return 'date';
-      case 'string':
-      default:
-        return 'text';
-    }
-  }, [rule.field, fields]);
   
   useEffect(() => {
     const field = fields.find((field) => field.field === rule.field);
@@ -54,13 +87,14 @@ export const CustomRule: React.FC<CustomRuleProps> = ({ title, ruleIndex, rule: 
     setRule({ ...rule, operator: e.target.value });
   }
 
-  const updateValue = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
+  const updateValue = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>, type: string, pos: number) => {
+    const val = rule.value;
     if (type === 'number') {
-      setRule({ ...rule, value: Number(e.target.value) });
-    } else if (type === 'boolean') {
-      setRule({ ...rule, value: e.target.value === 'true' });
+      val.splice(pos, 1, e.target.value);
+      setRule({ ...rule, value: val });
     } else {
-      setRule({ ...rule, value: e.target.value });
+      val.splice(pos, 1, e.target.value);
+      setRule({ ...rule, value: val });
     }
   }
 
@@ -80,7 +114,7 @@ export const CustomRule: React.FC<CustomRuleProps> = ({ title, ruleIndex, rule: 
         ))}
       </select>
 
-      <input type={operatorType} className='p-1.5 rounded bg-[#F8F8FB] w-fit' value={rule.value as any} onChange={(ev) => updateValue(ev, operatorType)} />
+      <Input rule={rule} fields={fields} updateValue={updateValue} />
 
       <button className='p-1.5 border border-transparent hover:border-gray-200 hover:rounded hover:bg-gray-50' onClick={closeRule} >
         <CloseIcon className='w-4 h-4 fill-gray-600' />

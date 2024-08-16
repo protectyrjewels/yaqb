@@ -3,7 +3,7 @@ export const typeToOperatorsMap: { [key: string]: string[] } = {
   'number': ['eq', 'ne', 'lt', 'lte', 'gt', 'gte', 'between'],
   'date': ['eq', 'ne', 'lt', 'lte', 'gt', 'gte', 'between'],
   'boolean': ['eq'],
-  'selector': ['eq', 'ne'],
+  'enum': ['eq', 'ne'],
 };
 
 export const operatorToTextMap: { [key: string]: string } = {

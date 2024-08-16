@@ -1,3 +1,3 @@
 import './style.css';
 
-export { Builder, Rule } from './components';
+export { Builder } from './components';

@@ -11,6 +11,7 @@ export const Summary: React.FC<SummaryProps> = ({ title }) => {
 
   useEffect(() => {
     const sentence = queryBuilder.toSentence();
+    console.log('sentence', sentence);
     setSentence(sentence);
   }, [queryBuilder]);
 
