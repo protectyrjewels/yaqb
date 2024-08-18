@@ -5,12 +5,36 @@ import { rules, rules2, fields } from "./fixtures"
 describe("QueryBuilder", () => {
   describe("registerDialect", () => {
     it("should register a dialect successfully", () => {
-      const mockDialect = { id: "testDialect", toQuery: () => {} };
+      const mockDialect = { id: "testDialect", fromQuery: () => {}, toQuery: () => {} };
       QueryBuilder.registerDialect(mockDialect);
       const registeredDialect = DialectManager.getDialect("testDialect");
 
       expect(registeredDialect).toBeDefined();
       expect(registeredDialect?.id).toBe("testDialect");
+    });
+  });
+
+  describe("fromQuery", () => {
+    it("should throw an error for an unknown dialect", () => {
+      const execution = () => {
+        new QueryBuilder(rules, fields).fromQuery("nonExistentDialect", {});
+      };
+
+      expect(execution).toThrowError("Unknown dialect 'nonExistentDialect'");
+    });
+
+    it("should handle query correctly with a known dialect", () => {
+      const mockDialect = {
+        id: "mock",
+        fromQuery: (query, options) => ({ mocked: true, query, options }),
+        toQuery: () => {}
+      };
+      QueryBuilder.registerDialect(mockDialect);
+      const qb = new QueryBuilder(rules, fields);
+
+      const result = qb.fromQuery("mock", { test: "data" });
+
+      expect(result).toEqual({ mocked: true, query: { test: "data" }, options: undefined });
     });
   });
 
@@ -26,6 +50,7 @@ describe("QueryBuilder", () => {
     it("should retrieve query correctly using a registered dialect", () => {
       const mockDialect = {
         id: "usableDialect",
+        fromQuery: () => {},
         toQuery: (rules, options) => ({ rules, options })
       };
       QueryBuilder.registerDialect(mockDialect);

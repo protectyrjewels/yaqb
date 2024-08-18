@@ -5,6 +5,16 @@ import { format } from "@scaleleap/pg-format";
 export class PostgresQB implements IDialect {
   readonly id: string = "pg";
 
+  fromQuery(_query: string, _options?: any): any {
+    return {
+      condition: "and",
+      rules: [
+        { field: "name", operator: "eq", value: "John" },
+        { field: "age", operator: "between", value: [0, 120] },
+      ],
+    };
+  }
+
   toQuery(rules: RuleGroup, options: any = {}): any {
     // generate parameterized query by default
     const { query, params } = PostgresQB.transformToSQLQuery(rules);
