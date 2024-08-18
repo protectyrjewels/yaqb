@@ -44,7 +44,14 @@ describe("QueryBuilder", () => {
 
       expect(
         qb.fromQuery("pg", `"name" LIKE 'John' AND "age" >= 0 AND "age" <= 120`)
-      ).toEqual(rules);
+      ).toEqual({
+        conditions: ['AND', 'AND'],
+        rules: [
+          { field: 'name', operator: 'LIKE', value: 'John' },
+          { field: 'age', operator: 'GTE', value: 0 },
+          { field: 'age', operator: 'LTE', value: 120 },
+        ]
+      })
     });
   });
 });

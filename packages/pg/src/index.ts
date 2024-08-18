@@ -1,18 +1,19 @@
 import type { IDialect, Rule, RuleGroup } from "@yaqb/core";
 import { QueryBuilder } from "@yaqb/core";
 import { format } from "@scaleleap/pg-format";
+import { Tokenizer } from "./tokenizer";
+import { Parser } from "./parser";
 
 export class PostgresQB implements IDialect {
   readonly id: string = "pg";
 
-  fromQuery(_query: string, _options?: any): any {
-    return {
-      condition: "and",
-      rules: [
-        { field: "name", operator: "eq", value: "John" },
-        { field: "age", operator: "between", value: [0, 120] },
-      ],
-    };
+  readonly reserved: string[] = ["AND"];
+
+  fromQuery(query: string, _options?: any): any {
+    const tokens = new Tokenizer().parse(query)
+    if (!tokens) return null
+    const expr = new Parser(tokens).parse()
+    return expr
   }
 
   toQuery(rules: RuleGroup, options: any = {}): any {
