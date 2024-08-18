@@ -37,4 +37,14 @@ describe("QueryBuilder", () => {
       });
     });
   });
+
+  describe("fromQuery", () => {
+    it("should convert from a postgres query", () => {
+      const qb = new QueryBuilder(rules, fields);
+
+      expect(
+        qb.fromQuery("pg", `"name" LIKE 'John' AND "age" >= 0 AND "age" <= 120`)
+      ).toEqual(rules);
+    });
+  });
 });
