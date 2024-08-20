@@ -1,3 +1,12 @@
+export interface InputInfo {
+  fieldId: string;
+  value: string | number;
+}
+
+export interface InputQueryResolver {
+  [key: string]: InputInfo[];
+}
+
 export interface Mapper {
   [key: string]: { [key: string]: string };
 }
@@ -5,7 +14,8 @@ export interface Mapper {
 export interface Condition {
   field: string;
   operator: string; // ENUM
-  value: string;
+  value: string | number | boolean;
+  // sourceTable: string; @Faustino, o que achas?
 }
 
 export interface JoinCondition {
@@ -19,9 +29,17 @@ export interface AppendJoinCondition {
   valueToCompare: string;
 }
 
+export enum ColumnFunction {
+  MAX = "Max",
+  MIN = "Min",
+  AVG = "Avg",
+  SUM = "Sum",
+  COUNT = "Count",
+}
+
 export interface SelectConfig {
   column: string;
-  function?: string; // ENUM
+  function?: ColumnFunction;
   as?: string;
 }
 
@@ -55,6 +73,7 @@ export interface SortDefault {
    * By default, null values sort as if larger than any non-null value; that is, NULLS FIRST is the default for DESC order, and NULLS LAST otherwise.
    */
   nulls?: "FIRST" | "LAST";
+  // sourceTable: string; @Faustino, o que achas?
 }
 /**
  * Array method. Used to order by any array of value.
@@ -77,7 +96,7 @@ export interface SortArrayOrder {
   order?: "ASC" | "DESC";
 }
 
-export type SortConfig = (SortDefault | SortArrayOrder) & {
+export type SortConfig = SortDefault & {
   appendCondition?: AppendJoinCondition;
 };
 
@@ -89,11 +108,11 @@ export interface GroupByConfig {
 export interface Config {
   model: string;
   select: SelectConfig[];
-  joins?: JoinConfig[];
+  joins?: JoinConfig[]; // TODO - Select + Alias + Funct
   where?: Condition[];
-  pagination?: PaginationConfig;
-  sort?: Array<SortConfig>;
-  groupBy?: Array<string | GroupByConfig>;
+  pagination?: PaginationConfig; // @Faustino, no mongo devolvemos isto a parte?
+  sort?: Array<SortConfig>; // TODO: SortArrayOrder Add Support
+  groupBy?: Array<string | GroupByConfig>; // TODO: Mongo Support
   mapper?: Mapper;
 }
 

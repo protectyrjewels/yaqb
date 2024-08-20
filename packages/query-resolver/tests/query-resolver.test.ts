@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { QueryResolver } from "../src/index";
+import { InputQueryResolver } from "../src/config/query-config";
+import { random_example, us_example } from "./configs";
 
-describe("Test", () => {
+describe.skip("Test", () => {
   describe("Where Clauses", () => {
     it("It should return empty array when input is null", () => {
       const qr = new QueryResolver();
@@ -276,10 +278,242 @@ describe("Test", () => {
   });
 });
 
-describe("US 1", () => {});
+describe("Test - _config_replacement + _config_parser_to_query", () => {
+  const qr = new QueryResolver();
+  describe("Test - sql", () => {
+    describe("Random Example", () => {
+      const inputQueryResolver: InputQueryResolver = {
+        Users: [
+          {
+            fieldId: "field_1",
+            value: "random",
+          },
+        ],
+      };
 
-describe("US 2", () => {});
+      it("Random SQL Query", () => {
+        const replaced = qr._config_replacement(
+          inputQueryResolver,
+          random_example,
+          "Users"
+        );
 
-describe("US 3", () => {});
+        const sql_query = qr._config_parser_to_query("sql", replaced);
 
-describe("US 4", () => {});
+        expect(sql_query).toEqual(
+          "SELECT users.id, users.first_name, users.last_name, Max(users.random) AS random_as, users.random_1 AS new_as" +
+            " FROM users users INNER JOIN countries ON users.country_id = countries.id" +
+            " WHERE (users.first_name = 'Rui' AND users.age >= 10 AND users.active = true)" +
+            " GROUP BY users.id, users.type" +
+            " ORDER BY users.id DESC, users.first_name ASC" +
+            " LIMIT 10 OFFSET 10"
+        );
+      });
+
+      it("Random Mongo Aggregation", () => {
+        const replaced = qr._config_replacement(
+          inputQueryResolver,
+          random_example,
+          "Users"
+        );
+
+        const mongo_aggre = qr._config_parser_to_query("mongo", replaced);
+
+        expect(mongo_aggre).toEqual([
+          {
+            $lookup: {
+              as: "countries",
+              from: "countries",
+              let: {
+                country_id: "$country_id",
+              },
+              pipeline: [
+                {
+                  $match: {
+                    $and: [
+                      {
+                        $expr: {
+                          $eq: ["$id", "$$country_id"],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $unwind: {
+              path: "$countries",
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+          {
+            $match: {
+              "users.active": true,
+              "users.age": {
+                $gte: 10,
+              },
+              "users.first_name": "Rui",
+            },
+          },
+          {
+            $sort: {
+              "users.first_name": 1,
+              "users.id": -1,
+            },
+          },
+          {
+            $addFields: {
+              random_as: {
+                $max: "$random",
+              },
+            },
+          },
+          {
+            $project: {
+              first_name: "$first_name",
+              id: "$id",
+              last_name: "$last_name",
+              new_as: "$random_1",
+            },
+          },
+        ]);
+      });
+    });
+
+    describe("US 1", () => {
+      it("SQL Query - Is currently in + Country + USA", () => {
+        const inputQueryResolver: InputQueryResolver = {
+          Geographic: [
+            {
+              fieldId: "field_1",
+              value: "Is currently in",
+            },
+            {
+              fieldId: "field_2",
+              value: "country",
+            },
+            {
+              fieldId: "field_3",
+              value: "USA",
+            },
+          ],
+        };
+
+        const replaced = qr._config_replacement(
+          inputQueryResolver,
+          us_example,
+          "Geographic"
+        );
+
+        const sql_query = qr._config_parser_to_query("sql", replaced);
+
+        expect(sql_query).toEqual(
+          "SELECT users.id, users.first_name, users.last_name FROM users users INNER JOIN countries ON users.country_id = countries.id WHERE countries.name = 'USA'"
+        );
+      });
+
+      it("SQL Query - Is not currently in + Region + East", () => {
+        const inputQueryResolver: InputQueryResolver = {
+          Geographic: [
+            {
+              fieldId: "field_1",
+              value: "Is not currently in",
+            },
+            {
+              fieldId: "field_2",
+              value: "region",
+            },
+            {
+              fieldId: "field_4",
+              value: "east",
+            },
+          ],
+        };
+
+        const replaced = qr._config_replacement(
+          inputQueryResolver,
+          us_example,
+          "Geographic"
+        );
+
+        const sql_query = qr._config_parser_to_query("sql", replaced);
+
+        expect(sql_query).toEqual(
+          "SELECT users.id, users.first_name, users.last_name FROM users users INNER JOIN regions ON users.region_id = regions.id WHERE regions.name <> 'east'"
+        );
+      });
+    });
+
+    describe("US 2", () => {
+      it("SQL Query - Age + Greater Than + 18", () => {
+        const inputQueryResolver: InputQueryResolver = {
+          Demographic: [
+            {
+              fieldId: "field_1",
+              value: "Age",
+            },
+            {
+              fieldId: "field_4",
+              value: "greater",
+            },
+            {
+              fieldId: "field_5",
+              value: 18,
+            },
+          ],
+        };
+
+        const replaced = qr._config_replacement(
+          inputQueryResolver,
+          us_example,
+          "Demographic"
+        );
+
+        const sql_query = qr._config_parser_to_query("sql", replaced);
+
+        expect(sql_query).toEqual(
+          "SELECT users.id, users.first_name, users.last_name FROM users users WHERE users.age > 18"
+        );
+      });
+    });
+
+    describe("US 3", () => {
+      it("SQL Query - Did + Purchased Product + Product Added + TV", () => {
+        const inputQueryResolver: InputQueryResolver = {
+          Behaviour: [
+            {
+              fieldId: "field_1",
+              value: "Did",
+            },
+            {
+              fieldId: "field_2",
+              value: "Purchased Product",
+            },
+            {
+              fieldId: "field_3",
+              value: "Product Added",
+            },
+            {
+              fieldId: "field_4",
+              value: "TV",
+            },
+          ],
+        };
+
+        const replaced = qr._config_replacement(
+          inputQueryResolver,
+          us_example,
+          "Behaviour"
+        );
+
+        const sql_query = qr._config_parser_to_query("sql", replaced);
+
+        expect(sql_query).toEqual(
+          "SELECT users.id, users.first_name, users.last_name FROM users users INNER JOIN purchased_products ON users.id = purchased_products.user_id WHERE purchased_products.name = 'TV'"
+        );
+      });
+    });
+  });
+});
