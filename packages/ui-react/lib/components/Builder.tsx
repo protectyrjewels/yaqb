@@ -5,7 +5,7 @@ import { PostgresQB } from '@yaqb/pg';
 import { useState } from 'react';
 import { QueryProvider } from '../contexts/query';
 import { Query } from './Query';
-import { CustomRule } from './CustomRule';
+import { Row } from './Row';
 import { Summary } from './Summary';
 import { Dropdown } from './Dropdown';
 import { typeToOperatorsMap } from '../operators';
@@ -53,7 +53,7 @@ export const Builder: React.FC<BuilderProps> = ({ rules, fields }) => {
           <div className='flex flex-col space-y-4 h-fit'>
             {queryBuilder.rules.rules.map((rule: RuleElem, index: number) => (
               ('field' in rule) ?
-                <CustomRule
+                <Row
                   key={index}
                   title={capitalize(fields.find(field => field.field === rule.field)?.metadata?.category)}
                   ruleIndex={index}
