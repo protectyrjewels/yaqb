@@ -1,7 +1,7 @@
 export interface Rule {
   field: string;
   operator: string;
-  value: string[] | number[] | string | number;
+  value: string[] | number[];
 }
 
 export type RuleElem = Rule | RuleGroup

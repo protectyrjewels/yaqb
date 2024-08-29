@@ -8,7 +8,7 @@ async function fetchPokemonNames(): Promise<PrimitiveType[]> {
       throw new Error('Network response was not ok');
   }
   const data = await response.json();
-  return data.results.map((pokemon: { name: string }) => pokemon.name as PrimitiveType);
+  return data.results.map((pokemon: { name: string }) => ({ label: pokemon.name, value: pokemon.name }));
 }
 
 const rules: RuleGroup = {
@@ -16,6 +16,7 @@ const rules: RuleGroup = {
   rules: [
     { field: 'name', operator: 'eq', value: ['John'] },
     { field: 'age', operator: 'gt', value: [20] },
+    { field: 'gender', operator: 'eq', value: ['famale'] }
   ]
 }
 
@@ -40,7 +41,27 @@ const fields: Field[] = [
     field: "gender",
     label: "Gender",
     type: "enum",
-    value: ["Male", "Female"],
+    value: [
+      { label: "Male", value: "male" },
+      { label: "Female", value: "female" },
+    ],
+    metadata: { category: "demographic" },
+  },
+  {
+    field: "favorite_color",
+    label: "Favorite Color",
+    type: "enum",
+    value: [
+      { label: "Red", value: "red" },
+      { label: "Green", value: "green" },
+      { label: "Blue", value: "blue" },
+    ],
+    conditions: [
+      {
+        field: 'gender',
+        value: 'male'
+      }
+    ],
     metadata: { category: "demographic" },
   },
   {

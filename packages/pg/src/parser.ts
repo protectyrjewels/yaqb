@@ -4,10 +4,10 @@ export class Parser {
   parse() {
     let rules = [];
     let conditions = [];
-    let currentRule = this.parseRule(this.tokens);
+    let currentRule = this.parseRule();
 
     while (this.tokens.length > 0) {
-      const cond = this.parseConditional(this.tokens);
+      const cond = this.parseConditional();
 
       if (cond.err) {
         rules.push(currentRule);
@@ -15,7 +15,7 @@ export class Parser {
       }
 
       conditions.push(cond);
-      const nextRule = this.parseRule(this.tokens);
+      const nextRule = this.parseRule();
       rules.push(currentRule);
       currentRule = nextRule;
     }
@@ -25,15 +25,15 @@ export class Parser {
     return { conditions, rules };
   }
 
-  parseRule(tokens: any[]) {
-    const column = this.parseColumn(tokens)
-    const op = this.parseOperation(tokens)
-    const value = this.parseValue(tokens)
+  parseRule() {
+    const column = this.parseColumn()
+    const op = this.parseOperation()
+    const value = this.parseValue()
     return { field: column, operator: op, value }
   }
 
-  parseColumn(tokens: any[]) {
-    const t = this.tokens.shift()
+  parseColumn() {
+    const t = this.tokens.shift()
     if (t.token !== 'COLUMN') {
       return { err: `expected COLUMN, got ${t.token}` }
     } else {
@@ -41,8 +41,8 @@ export class Parser {
     }
   }
 
-  parseOperation(tokens: any[]) {
-    const t = this.tokens.shift()
+  parseOperation() {
+    const t = this.tokens.shift()
     if (t.token !== 'OP') {
       return { err: `expected OP, got ${t.token}` }
     } else {
@@ -50,8 +50,8 @@ export class Parser {
     }
   }
 
-  parseValue(tokens: any[]) {
-    const t = this.tokens.shift()
+  parseValue() {
+    const t = this.tokens.shift()
     if (t.token !== 'STRING' && t.token !== 'NUMBER') {
       return { err: `expected STRING or NUMBER, got ${t.token}` }
     } else {
@@ -59,7 +59,7 @@ export class Parser {
     }
   }
 
-  parseConditional(tokens: any[]) {
+  parseConditional() {
     const t = this.tokens.shift()
     if (t.token == "COND") {
       return t.value

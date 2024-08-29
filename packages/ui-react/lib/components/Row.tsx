@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { operatorToTextMap, typeToOperatorsMap } from '../operators';
 import CloseIcon from '../icons/close';
 import { useQuery } from '../contexts/query';
-import { PrimitiveType } from '@yaqb/core/src/fields';
+import { Labelled, PrimitiveType } from '@yaqb/core/src/fields';
 
 export interface CustomRuleProps {
   title: string;
@@ -14,8 +14,12 @@ export interface CustomRuleProps {
   closeRule: () => void;
 }
 
+function isLabelledType(obj: PrimitiveType | Labelled<PrimitiveType>): obj is Labelled<PrimitiveType> {
+  return (obj as Labelled<PrimitiveType>).label !== undefined && (obj as Labelled<PrimitiveType>).value !== undefined;
+}
+
 const Input: React.FC<{ rule: Rule, fields: Field[], updateValue: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, type: string, pos: number) => void }> = ({ rule, fields, updateValue }) => {
-  const [vals, setVals] = useState<PrimitiveType[]>(rule.value);
+  const [vals, setVals] = useState<Array<PrimitiveType | Labelled<PrimitiveType>>>(rule.value);
 
   const field = fields.find((field) => field.field === rule.field);
   if (!field) {
@@ -41,9 +45,9 @@ const Input: React.FC<{ rule: Rule, fields: Field[], updateValue: (e: React.Chan
   if (rule.operator === 'between') {
     return (
       <div className='flex space-x-2 items-center'>
-        <input type={field.type} className='p-1.5 rounded bg-[#F8F8FB] w-14' value={vals[0]} onChange={(e) => updateValue(e, 'number', 0)} />
+        <input type={field.type} className='p-1.5 rounded bg-[#F8F8FB] w-14' value={vals[0] as PrimitiveType} onChange={(e) => updateValue(e, 'number', 0)} />
         <span className='text-gray-600'>and</span>
-        <input type={field.type} className='p-1.5 rounded bg-[#F8F8FB] w-14' value={vals[1]} onChange={(e) => updateValue(e, 'number', 1)} />
+        <input type={field.type} className='p-1.5 rounded bg-[#F8F8FB] w-14' value={vals[1] as PrimitiveType} onChange={(e) => updateValue(e, 'number', 1)} />
       </div>
     );
   }
@@ -51,18 +55,20 @@ const Input: React.FC<{ rule: Rule, fields: Field[], updateValue: (e: React.Chan
   switch (field.type) {
     case 'enum':
       return (
-        <select className='p-1.5 rounded bg-[#F8F8FB] w-fit' value={rule.value[0]} onChange={(e) => updateValue(e, 'text', 0)}>
-          {(vals).map((value: PrimitiveType) => (
-            <option key={value} value={value}>{value.toString()}</option>
-          ))}
+        <select className='p-1.5 rounded bg-[#F8F8FB] w-fit' value={(rule.value as any)[0]} onChange={(e) => updateValue(e, 'text', 0)}>
+          {(vals).map((opt) => {
+            if (isLabelledType(opt)) {
+              return <option key={opt.value} value={opt.value}>{opt.label}</option>
+            }  
+          })}
         </select>
       );
     default:
-      return <input type={field.type} className='p-1.5 rounded bg-[#F8F8FB] w-fit' value={vals[0] as string} onChange={(e) => updateValue(e, 'text', 0)} />
+      return <input type={field.type} className='p-1.5 rounded bg-[#F8F8FB] w-fit' value={vals[0] as any} onChange={(e) => updateValue(e, 'text', 0)} />
   }
 }
 
-export const CustomRule: React.FC<CustomRuleProps> = ({ title, ruleIndex, rule: initialRule, fields, closeRule }) => {
+export const Row: React.FC<CustomRuleProps> = ({ title, ruleIndex, rule: initialRule, fields, closeRule }) => {
   const { queryBuilder, setQueryBuilder } = useQuery();
   const [availableOperators, setAvailableOperators] = useState<string[]>([]);
   const [rule, setRule] = useState<Rule>(initialRule);
